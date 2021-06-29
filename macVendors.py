@@ -67,7 +67,7 @@ def searchMac(mac):
 
 delim = '-' *80
 
-if (not sys.argv.count == 0 or network == '-h'):
+if (sys.argv.count == 0 or sys.argv[1] == '-h'):
     showHelp()
 else:
     network=sys.argv[1]
