@@ -1,6 +1,7 @@
 from scapy.all import *
 import sqlite3
 import sys
+import argparse
 
 def showBanner():
     print("                      ::::    ::::      :::      ::::::::                      ")
@@ -19,13 +20,6 @@ def showBanner():
     print("    ###     ########## ###    #### #########   ########  ###    ###  ########  ")
     print("")
 
-def showHelp():
-    showBanner()
-    print("Uso:")
-    print("    macVendors.py -h - Mostra este menu")
-    print("    macVendors.py xxx.xxx.xxx.xxx/xx - Scan MAC")
-    print("     Importante: o argumento deve ser fornecido na notação CIDR!")
-    print("")
 
 def scanNet(ip):
     # Cria um frame para ser enviado para o endereço
@@ -67,16 +61,20 @@ def searchMac(mac):
 
 delim = '-' *80
 
-if (sys.argv.count == 0 or sys.argv[1] == '-h'):
-    showHelp()
-else:
-    network=sys.argv[1]
-    showBanner()
-    print(delim)
-    print('{:^17s}{:^48s}{:^15s}'.format("MAC", "Vendor", "IP"))
-    print(delim)
-    macAdd=scanNet(network)
-    for mac in macAdd:
-        temp = searchMac(mac['mac'])
-        print('{:^17s}{:^48s}{:^15s}'.format(mac['mac'], temp[1], mac['ip']))
-    print(delim)
+
+parser=argparse.ArgumentParser(prog='macVendors.py', usage='%(prog)s network \n\t Utilize -h para ajuda.')
+parser.add_argument('network', type=str,
+    help='Rede no formato CIDR, i.e. XXX.XXX.XXX.XXX/YY')
+args=parser.parse_args()
+
+network=args.network
+
+showBanner()
+print(delim)
+print('{:^17s}{:^48s}{:^15s}'.format("MAC", "Vendor", "IP"))
+print(delim)
+macAdd=scanNet(network)
+for mac in macAdd:
+    temp = searchMac(mac['mac'])
+    print('{:^17s}{:^48s}{:^15s}'.format(mac['mac'], temp[1], mac['ip']))
+print(delim)
