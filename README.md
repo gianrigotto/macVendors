@@ -11,7 +11,7 @@
 
 ## Instalação de requisitos
 ```bash
-    pip3 install -f requirements.txt
+    pip3 install -r requirements.txt
 ```
 
 ## Utilização
